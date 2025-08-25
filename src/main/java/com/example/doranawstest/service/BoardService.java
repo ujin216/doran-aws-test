@@ -5,6 +5,7 @@ import com.example.doranawstest.domain.Board;
 import com.example.doranawstest.domain.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,7 @@ public class BoardService {
         boardRepository.save(board);
     }
 
+    @Cacheable(cacheNames = "board", key = "#id")
     public BoardResponse getBoardById(Long id) {
         Board board = boardRepository.findById(id).orElseThrow();
         return new BoardResponse(
